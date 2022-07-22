@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -6,6 +7,7 @@ using namespace std;
 double a, b, c, d, epsilon;
 
 // initialize the global variable for a given equation
+// Complexity: O(1)
 void equation(double p, double q, double r, double s, double precision=1e-15){
   a = p;
   b = q;
@@ -14,6 +16,7 @@ void equation(double p, double q, double r, double s, double precision=1e-15){
   epsilon = precision;
 }
 
+// Complexity: O(1)
 double solveFor(double x){
   // solve for an specific value
   double result = (a*x*x*x + b*x*x + c*x + d);
@@ -23,6 +26,9 @@ double solveFor(double x){
 
 /** BISECTION METHOD
  * Actual algorithm has been implemented here.
+ * 
+ * complexity: O(n)
+ * 
 */
 double solve(){
   // range
@@ -34,7 +40,11 @@ double solve(){
 
   // precision has already been set when initialized
 
-  while(abs(L-R) > epsilon){
+  // Number of steps required
+  int steps = log(abs(a*d)/epsilon)/(log(2));
+	steps = int(steps)+1;
+  
+  for(int i = 0; i < steps; i++){
     
     if( solveFor(X) > 0.0 ){
 			// look for root in the first half
