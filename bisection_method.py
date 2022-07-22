@@ -1,4 +1,5 @@
 #import time		# used for debugging purpose (TDD approach)
+from math import log 
 
 
 class Solve:
@@ -9,8 +10,19 @@ class Solve:
 		self.b = b
 		self.c = c
 		self.d = d
+		
+		# Let's set the precision for 
+		# solving the equation.
+		# 1e-15 is the lowest possible accuracy
+		#		that can be achieved for my machine(64bit)
 		# default value = 1e-15
 		self.precision = precision
+
+		# number of steps required
+		#		to solve the equation
+		#	Formula: n >= ( ln(|R-L|/epsilon) )/(ln2)
+		self.steps = log(abs(self.a*self.d)/self.precision)/(log(2))
+		self.steps = int(self.steps.real)+1
 
 		# keeps track of the steps
 		self.count = 0
@@ -20,7 +32,9 @@ class Solve:
 	
 	
 	# This function solve an equation
-	# 		for a specific value 
+	# 		for a specific value
+	# Time complexity: O(1) 
+	# Memory complexity: O(1) 
 	def solveFor(self, x):
 		# This is an optional task that
 		# counts how many times the function was called.	
@@ -36,6 +50,8 @@ class Solve:
 	# ============= Bisection Method =============
 	# The actual algorithm for "Bisection Method"
 	#  has been implemented in this function
+	# Time complexity: O(n),   where n >= ( ln(|R-L|/epsilon) )/(ln2) 
+	# Memory complexity: O(1)
 	def solve(self):
 		
 		# Let's start with the range [L, R]
@@ -49,13 +65,7 @@ class Solve:
 
 		# print(L, R) 	# used for debugging purpose
 
-		# Let's set the precision for 
-		# solving the equation
-		# 1e-15 is the lowest possible accuracy
-		#		that can be achieved for my machine(64bit)
-		epsilon =  self.precision
-
-		while abs(R-L) > epsilon :
+		for i in range(self.steps):
 			
 			# time.sleep(0.01) 	# used for debugging purpose
 			
@@ -73,20 +83,37 @@ class Solve:
 			X = (L+R)/2
 			
 		# This shows total number of steps needed
-		print(str(self.count) ," operations performed to solve.")
+		print(str(self.count) ," operations performed to solve.")     	# used for debugging purpose
 		
 		return X
 	
+
+	# default class function
 	def __str__(self):
-		
 		# show the eqn
 		eqn = 'f(x) = (' + str(self.a) + ')x^3 + (' + str(self.b) + ')x^2 + (' + str(self.c) + ')x + (' + str(self.d) + ')\n'
+
+		eqn += '\t Steps needed to solve: '
+
+		steps = log(abs(self.a*self.d)/self.precision)/(log(2))
+		steps = int(steps.real)+1
+
+		eqn += str(steps) + '\n'
 		
 		return eqn
 		
+	# default class function for debugging
 	def __repr__(self):
+		# show the eqn
 		eqn = 'f(x) = (' + str(self.a) + ')x^3 + (' + str(self.b) + ')x^2 + (' + str(self.c) + ')x + (' + str(self.d) + ')\n'
-		
+
+		eqn += '\t Steps needed to solve: '
+
+		steps = log(abs(self.a*self.d)/self.precision)/(log(2))
+		steps = int(steps.real)+1
+
+		eqn += str(steps) + '\n'
+
 		return eqn
 	
 	
@@ -108,3 +135,5 @@ if __name__ == "__main__":
 	s2 = Solve(a, b, c, d)
 
 	print("x = ", s2.solve())
+
+	
